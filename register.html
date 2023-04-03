@@ -3,9 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Crear cuenta</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="css/account-styles.css">
-	<title>Registrate</title>
 	<style>
 		body {
 			background-image: url('img/cloud.png');
@@ -13,20 +12,18 @@
 			background-position: center;
 			background-repeat: no-repeat;
 		}
-				img {
-    max-width: 650px;
-   max-height: 650px;
-} 
-
+		img {
+			max-width: 550px;
+			max-height: 550px;
+		} 
 
 	</style>
 </head>
 <body>
-	<div class="container-fluid vh-100">
-		<div class="row px-5 mx-5">
-			<div class="col-lg-6 mt-lg-5 pt-lg-5">
-				<h1 class="fw-bold">Crea una cuenta y comienza a comprar</h1>
-				<form action="" method="POST" class="mt-lg-4 pt-lg-4 needs-validation" novalidate>
+	<div class="container-fluid  min-vh-100 d-flex flex-column-reverse flex-lg-row justify-contetn-center align-items-center" >
+		<div class="col-12 col-lg-6 px-lg-5 pt-4 pt-lg-0">
+				<h1 class="text-center fw-bold mb-5" >Crea una cuenta y comienza a comprar</h1>
+				<form action="" method="POST" class="mx-auto needs-validation" novalidate>
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-floating mb-2 has-validation" >
@@ -198,10 +195,10 @@
 							<button type="submit" class="btn btn-success fw-bold">Registrarse</button>
 						</div>
 					</div>
-					<h5 class="text-center mt-5">O inicia sesión con <a href="login.html" class="text-decoration-none">Tu cuenta</a></h5>
+					<h5 class="text-center mt-5 mb-5 mb-lg-0 pb-5">O inicia sesión con <a href="login.html" class="text-decoration-none">Tu cuenta</a></h5>
 				</form>
-			</div>
-			<div class="col-lg-6 mx-auto mt-lg-5 pt-lg-5">
+		</div>
+		<div class="col-lg-6">
 				<div class="row">					
 					<img src="img/account-not-css.svg" >
 				</div>
@@ -209,10 +206,8 @@
 					<h3 class="fw-bold">¡Regístrate ahora y comienza a explorar nuestras impresionantes artesanías en nuestro e-comerce!</h3>
 					<h2 class="fw-bold text-success">¡Bienvenido/a!</h2>
 				</div>
-			</div>
 		</div>
 	</div>
-
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 	<script>
 		(() => {
@@ -233,6 +228,6 @@
 				}, false)
 			})
 		})()
-	</script>
+	</script>	
 </body>
 </html>
