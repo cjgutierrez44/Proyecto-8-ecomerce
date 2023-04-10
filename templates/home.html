@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>El mejor ecomerce del mundo</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.css')}}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+	<style>
+		.bg-white{
+			background-color: white;
+		}
+		.bg-green{
+			background-color: #f1f9f7;
+		}
+		.image {
+			max-width: 750px;
+			max-height: 750px;
+		} 
+	</style>
+</head>
+<body>
+	{% include "header.html" %}
+	<div class="container-fluid min-vh-100 ">
+		<div class="row d-flex flex-column-reverse flex-lg-row justify-contetn-center align-items-center bg-green"> 
+			<div class="col-12 col-lg-6 px-lg-5">
+				<h1 class=" fw-bold">Bienvenido a la tienda de artesanías más auténtica.</h1>
+				<p class="fs-4 mb-5">La mejor selección de artesanías en línea te espera.</p>
+				<div class="row">
+					{% if session["user"] is not defined %}
+
+					<p class="text-center "><a href="/register" class="btn btn-success fw-bold px-4">Regístrate</a> o <a href="/login" class="btn btn-success fw-bold px-4">Inicia sesión</a></p>
+
+					{% endif %}
+					<p class="text-center "><a href="/shop" class="btn btn-success fw-bold px-4">Explora Nuestros Productos</a></p>
+				</div>
+			</div>
+			<div class="col-12 col-lg-6 image">
+				<img src="{{url_for('static', filename='img/Ecommerce-web-page-amico.svg')}}" >
+
+			</div>
+		</div>
+		<div class="row py-3 bg-green">
+			<div class="mt-lg-5 col-12 col-lg-6 mx-auto">	
+				<h2 class="text-center text-success fw-bold mb-3">Encuentra lo que estás buscando</h2>
+				<div class="input-group ">
+					<input type="text" class="form-control form-control-lg" placeholder="Busca lo que necesitas" name="search" id="search">
+					<a href="/shop" class="btn btn-success px-3 h-10s py-s3"><i class="bi bi-search fs-2"></i></a>
+				</div>
+			</div>
+	
+
+		</div>
+		<div class="row mt-3 mt-lg-5 d-flex justify-content-center bg-white">
+			<h3 class="text-center fw-bold text-success mt-3 mb-5">Descubre nuestras ventajas</h3>
+			<div class="col-lg-2">
+				<div class="card mb-3 border-0">
+					<div class="card-body text-center">
+						<img src="{{url_for('static', filename='img/Mail-sent-bro.svg')}}">
+						<h4 class="text-success fw-bold">Envío gratuito</h4>
+						<p>Disfruta de envío gratuito en todas tus compras. Ahorra en los gastos de envío y recibe tus productos de artesanía sin costos adicionales.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="card mb-3 border-0">
+					<div class="card-body text-center">
+						<img src="{{url_for('static', filename='img/Product-hunt-bro.svg')}}">
+						<h4 class="text-success fw-bold">Amplia selección de productos</h4>
+						<p>Descubre nuestra amplia variedad de productos de artesanía, desde objetos decorativos hasta prendas de vestir. Encuentra el producto perfecto para ti o para regalar.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="card mb-3 border-0">
+					<div class="card-body text-center">
+						<img src="{{url_for('static', filename='img/E-Wallet-bro.svg')}}">
+						<h4 class="text-success fw-bold">Seguridad de pago</h4>
+						<p>Ver productos en nuestra tienda en línea es seguro y confiable. Utilizamos tecnología de encriptación de datos y métodos de pago seguros para proteger tu información personal y financiera.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="card mb-3 border-0">
+					<div class="card-body text-center">
+						<img src="{{url_for('static', filename='img/Sales-consulting-amico.svg')}}">
+						<h4 class="text-success fw-bold">Servicio al cliente</h4>
+						<p>Nuestro equipo de servicio al cliente está disponible para ayudarte en cualquier momento. Contáctanos si tienes alguna pregunta o necesitas asistencia en tu compra.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row d-flex flex-row justify-content-center mt-3 mt-lg-4 mb-3">
+			<h3 class="text-success fw-bold text-center">Explora nuestras categorías</h3>
+			<p class="text-center">Descubre nuestra amplia selección de productos organizados por categorías. Encuentra fácilmente lo que buscas y explora nuevas opciones.</p>
+			<div class="col-lg-3">
+				<div class="card mb-3 h-100">
+					<div class="card-header">
+						<img src="{{url_for('static', filename='img/Origami-bird-rafiki.svg')}}" class="card-img-top">
+					</div>
+					<div class="card-body d-flex flex-column mb-3">
+						<p class="fs-3 text-muted">Juguetes y juegos artesanales</p>
+						<p>Si buscas algo especial y único para los más pequeños, nuestros juguetes y juegos artesanales son la opción perfecta. Hechos a mano con materiales seguros y resistentes, cada juguete cuenta con detalles únicos y diseños creativos.</p>
+						<button class="btn btn-outline-success fw-bold mt-auto">Ver productos</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="card mb-3 h-100">
+					<div class="card-header d-flex flex-column">
+						<img src="{{url_for('static', filename='img/Art-bro.svg')}}" class="card-img-top">
+					</div>
+					<div class="card-body d-flex flex-column mb-3">
+						<p class="fs-3 text-muted">Artesanías de cerámica</p>
+						<p>Descubre nuestras artesanías de cerámica únicas y exclusivas, hechas a mano por talentosos artistas. Cada taza, plato o maceta tiene un toque personal y es perfecta para dar un toque artístico a tu hogar.</p>
+						<button class="btn btn-outline-success fw-bold mt-auto">Ver productos</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="card mb-3 h-100">
+					<div class="card-header">
+						<img src="{{url_for('static', filename='img/Bath-bomb-pana.svg')}}" class="card-img-top">
+					</div>
+					<div class="card-body d-flex flex-column mb-3">
+						<p class="fs-3 text-muted">Decoración del hogar</p>
+						<p>Dale un toque personal y acogedor a tu hogar con nuestra amplia selección de objetos decorativos artesanales. Desde cojines y cortinas hasta alfombras y cestas, encontrarás todo lo que necesitas para crear un ambiente cálido y acogedor.</p>
+						<button class="btn btn-outline-success fw-bold mt-auto">Ver productos</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="card mb-3 h-100">
+					<div class="card-header">
+						<img src="{{url_for('static', filename='img/Moment-to-remember-amico.svg')}}" class="card-img-top">
+					</div>
+					<div class="card-body d-flex flex-column mb-3">
+						<p class="fs-3 text-muted">Papelería artesanal</p>
+						<p>Encuentra la perfecta combinación de estilo y funcionalidad con nuestra colección de papelería artesanal. Cada pieza es creada a mano por nuestros artesanos, utilizando técnicas tradicionales y materiales de alta calidad para crear diseños únicos y elegantes. </p>
+						<button class="btn btn-outline-success fw-bold mt-auto">Ver productos</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="row d-flex flex-column flex-lg-row justify-contetn-center align-items-center bg-green pt-3 pt-lg-5">
+			<div class="col-12 col-lg-6">
+				<img src="{{url_for('static', filename='img/Ecommerce-web-page-bro.svg')}}" >	
+			</div>
+			<div class="col-12 col-lg-6">
+				<h2 class="text-center fw-bold text-success fs-1 mb-3">Explora nuestros productos</h2>
+				<p class="px-3 px-lg-5 fs-4 text-center text-lg-start">Encuentra la pieza perfecta para ti en nuestra amplia selección de productos artesanales. Descubre nuestras últimas creaciones y explora nuestras categorías de productos. ¡No te pierdas nada! Haz clic en el botón a continuación para ver todos nuestros productos.</p>
+				<div class="d-flex justify-content-center">
+					<a href="/shop" class="btn btn-success px-4 py-2 mt-3 mt-lg-5">Descubrir más</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="bg-light py-4">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+					<h6 class="text-uppercase mb-4">Sobre nosotros</h6>
+					<p>Somos una tienda en línea de artesanías comprometida con ofrecer productos únicos y de alta calidad. Nos enorgullece trabajar con artesanos locales y apoyar la cultura y las tradiciones de nuestra región. Estamos comprometidos en brindar una excelente experiencia de compra en línea y un servicio al cliente excepcional. ¡Gracias por apoyar a nuestra pequeña empresa!</p>
+
+				</div>
+				<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+					<h6 class="text-uppercase mb-4">Enlaces</h6>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-2"><a href="#">Inicio</a></li>
+						<li class="mb-2"><a href="#">Productos</a></li>
+						<li class="mb-2"><a href="#">Nosotros</a></li>
+						<li class="mb-2"><a href="#">Contacto</a></li>
+					</ul>
+				</div>
+				<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+					<h6 class="text-uppercase mb-4">Categorías</h6>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-2"><a href="#">Joyería</a></li>
+						<li class="mb-2"><a href="#">Cerámica</a></li>
+						<li class="mb-2"><a href="#">Textiles</a></li>
+						<li class="mb-2"><a href="#">Decoración</a></li>
+					</ul>
+				</div>
+				<div class="col-lg-4">
+					<h6 class="text-uppercase mb-4">Contacto</h6>
+					<p class="mb-1">123 Calle Falsa</p>
+					<p class="mb-1">Ciudad Ficticia</p>
+					<p class="mb-1">12345</p>
+					<p class="mb-1">contacto@ejemplo.com</p>
+				</div>
+			</div>
+			<div class="row d-flex flex-row justify-content-center align-items-center mb-4">
+				<ul class="list-inline mt-4 text-center">
+					<li class="list-inline-item">
+						<a href="#" class="text-muted fs-3"><i class="bi bi-facebook fa-lg"></i></a>
+					</li>
+					<li class="list-inline-item">
+						<a href="#" class="text-muted fs-3"><i class="bi bi-twitter fa-lg"></i></a>
+					</li>
+					<li class="list-inline-item">
+						<a href="#" class="text-muted fs-3"><i class="bi bi-instagram fa-lg"></i></a>
+					</li>
+					<li class="list-inline-item">
+						<a href="#" class="text-muted fs-3"><i class="bi bi-pinterest fa-lg"></i></a>
+					</li>
+				</ul>
+			</div>
+			<hr class="my-4">
+			<div class="row align-items-center">
+				<div class="col-md-6 small text-center text-md-left">
+					<p class="mb-0">&copy; 2023 Ejemplo de tienda en línea de artesanías. Todos los derechos reservados.</p>
+				</div>
+			</div>
+
+		</div>
+	</footer>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>
