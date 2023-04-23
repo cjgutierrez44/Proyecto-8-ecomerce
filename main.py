@@ -120,9 +120,14 @@ def registerProduct():
 			quantity = request.form['quantity'] 
 			category = request.form['category']
 
-			img_filename = secure_filename(picture.filename)
+			img_filename = eanCode + "-"+secure_filename(picture.filename)
+
 			picture.save(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
 
+			img_path = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
+
+			with open(img_path, 'rb') as f:
+				imagen = f.read()
 
 			product = {            
 				"eanCode": eanCode,
@@ -130,18 +135,26 @@ def registerProduct():
 				"description": description,
 				"brand": brand,
 				"price": price,
-				"picture": "http://localhost:5000/static/uploads/" + img_filename,
+				"picture": img_filename,
 				"quantity": quantity,
 				"category":{
 					"id": category,
-					"name": ""
+					"name": "",
+				},
+				"user": {
+					"id": session["user"]["id"]
 				}
+				
 			}
 
 			headers = {'Content-type': 'application/json'}
 			url = "http://localhost:8080/api/products/save"
 			resp = requests.post(url, data=json.dumps(product), headers=headers)
-			print(resp)
+
+
+			url = "http://localhost:8080/api/products/upload/"+ img_filename
+			response = requests.post(url, files={'file': imagen})
+
 			return redirect(url_for("shop"))
 	else:
 		return redirect(url_for("login"))
@@ -203,12 +216,125 @@ def comment(id):
 	resp = requests.post(url, data=json.dumps(comment), headers=headers)
 	return redirect(url_for("product", id = id))
 
+@app.route("/myProducts")
+def myProducts():
+	if "user" in session:
+		url = "http://127.0.0.1:8080/api/products/ByUserId/" + str(session["user"]["id"])
+		products = requests.get(url).json()
+		return render_template("myProducts.html", products = products)
+	else:
+		return redirect(url_for("index"))
+
+@app.route("/deleteProduct/<id>")
+def deleteProduct(id):
+	if "user" in session:
+		url = "http://127.0.0.1:8080/api/products/byId/" + id
+		product = requests.get(url).json()
+		if product["user"]["id"] == session["user"]["id"]:
+			url = "http://127.0.0.1:8080/api/products/remove/" + id
+			resp = requests.get(url).json()
+			return  redirect(url_for("myProducts"))
+		else:
+			return redirect(url_for("myProducts"))
+	else:
+		return redirect(url_for("index"))
+
+@app.route("/myProducts/deleted")
+def deletedProducts():
+	if "user" in session:
+		url = "http://127.0.0.1:8080/api/products/ByUserIdDeleted/" + str(session["user"]["id"])
+		products = requests.get(url).json()
+		return render_template("myProducts.html", products = products)
+	else:
+		return redirect(url_for("index"))
+
+
+@app.route("/restoreProduct/<id>")
+def restoreProduct(id):
+	if "user" in session:
+		url = "http://127.0.0.1:8080/api/products/byId/" + id
+		product = requests.get(url).json()
+		if product["user"]["id"] == session["user"]["id"]:
+			url = "http://127.0.0.1:8080/api/products/restore/" + id
+			resp = requests.get(url).json()
+			return  redirect(url_for("deletedProducts"))
+		else:
+			return redirect(url_for("deletedProducts"))
+	else:
+		return redirect(url_for("index"))
+
+
+@app.route("/updateProduct/<id>", methods = ["GET", "POST"])
+def updateProduct(id):
+	if "user" in session:
+		if request.method == "GET":
+			url = "http://127.0.0.1:8080/api/products/byId/" + id
+			product = requests.get(url).json()
+			if product["user"]["id"] == session["user"]["id"]:
+				url = "http://127.0.0.1:8080/api/categories"
+				categories = requests.get(url).json()
+				return render_template("editProduct.html", product = product, categories = categories)
+			else:
+				return redirect(url_for("myProducts"))
+		else:
+			url = "http://127.0.0.1:8080/api/products/byId/" + id
+			productE = requests.get(url).json()
+
+			eanCode = request.form['eanCode']
+			name = request.form['name']
+			description = request.form['description']
+			brand = request.form['brand']
+			price = request.form['price']
+			picture =  request.files['picture']
+			quantity = request.form['quantity'] 
+			category = request.form['category']
+
+			img_filename = eanCode + "-"+secure_filename(picture.filename)
+
+			if secure_filename(picture.filename) == "":
+				img_filename = productE["picture"]
+			else:
+				picture.save(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
+				img_path = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
+				with open(img_path, 'rb') as f:
+					imagen = f.read()
+				url = "http://localhost:8080/api/products/upload/"+ img_filename
+				response = requests.post(url, files={'file': imagen})
+				
+			product = {
+				"id": id,
+				"eanCode": eanCode,
+				"name": name,
+				"description": description,
+				"brand": brand,
+				"price": price,
+				"picture": img_filename,
+				"quantity": quantity,
+				"category":{
+					"id": category,
+					"name": "",
+				},
+				"state": productE["state"],
+				"user": {
+					"id": session["user"]["id"]
+				}
+			}
+
+			headers = {'Content-type': 'application/json'}
+			url = "http://localhost:8080/api/products/update"
+			resp = requests.post(url, data=json.dumps(product), headers=headers)
+
+			return redirect(url_for("myProducts"))
+
+	else:
+		return(redirect(url_for("index")))
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
 
-app.run(host = "192.168.1.6")
+app.run()
 
 
 
