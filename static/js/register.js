@@ -136,9 +136,3 @@ txtPasswordC.onkeyup = function(){
 };
 
 
-const form = document.getElementById("form")
-form.onsubmit = function(){
-      validarForm();
-      return false;
-};
-
