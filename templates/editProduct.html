@@ -89,13 +89,25 @@
           </div>    
         </div>
       </div>
-      <div class="col-lg-6">
+<div class="col-lg-6">
         <div class="form-floating mb-2 validate">            
           <input type="number" name="quantity" class="form-control" id="quantity" placeholder="Cantidad disponible" value="{{product['quantity']}}">
           <label for="quantity">Cantidad disponible</label>
           <div class="error-message">
             Por favor escriba la Cantidad disponible del producto.
           </div>    
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card col-5 mx-auto mb-3">
+          <img src="http://127.0.0.1:8080/api/products/imagen/{{product['picture']}}" onerror='this.src="/static/uploads/{{product.picture}}"' class="card-img-top " style="">
+        </div>
+        <div class="form-floating mb-2">
+          <input type="file" name="picture" class="form-control" id="picture" placeholder="Foto">
+          <label for="picture">Foto</label> 
+        </div>
         </div>
       </div>
     </div>
