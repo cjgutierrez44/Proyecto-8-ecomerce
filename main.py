@@ -329,6 +329,19 @@ def updateProduct(id):
 	else:
 		return(redirect(url_for("index")))
 
+
+@app.route("/myShopping", methods = ["GET", "POST"])
+def myShopping():
+	return render_template("myShopping.html")
+
+@app.route("/checkout", methods = ["GET", "POST"])
+def checkout():
+	return render_template("checkout.html")
+
+@app.route("/purchaseSummary")
+def purchaseSummary():
+		return render_template("purchaseSummary.html")
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
