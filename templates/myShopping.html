@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Tus compras</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.css')}}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <style>
+    .bg-white{
+      background-color: white;
+    }
+  </style>
+</head>
+<body class="bg-light">
+  {% include 'header.html' %}
+  <div class="container p-3  bg-white">
+    <h1 class="text-center">Tus compras</h1>
+    <h2 class="text-center fs-1 bg-warning">Modulo en construccion</h2>
+    <div class="row">
+      <div class="card">
+        <h5 class="card-header">07/05/2023</h5>
+        <div class="card-body">
+          <div class="row">
+            <div class="d-flex flex-row">
+              <div class="col-2">
+                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="">
+              </div>
+              <div class="col-10 px-4">
+                <h4 class="text-success">Estado de la compra</h4>
+                <ul class="list-group">
+                  <li class="list-group-item">Producto #1</li>
+                  <li class="list-group-item">Producto #3</li>
+                  <li class="list-group-item">Producto #4</li>
+                  <li class="list-group-item">Producto #5</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+          <div class="row mt-3 my-md-1">
+            <h4 class="text-end">$TotalDeLaCompra</h4>
+          </div>
+          <div class="row mt-3 my-md-1 ">
+            <div class="d-flex flex-column">
+              <a href="/purchaseSummary" class="btn btn-outline-info align-self-end">Ver compra</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  {% include 'footer.html' %}
+

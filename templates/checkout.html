@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Checkout</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.css')}}">
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/validation.css')}}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <style>
+    .bg-white{
+      background-color: white;
+    }
+  </style>
+</head>
+<body class="bg-light">
+  {% include 'header.html' %}
+  <div class="container p-3  bg-white">
+    <h1 class="text-center">Finaliza la compra</h1>
+    <h2 class="text-center fs-1 bg-warning">Modulo en construccion</h2>
+    
+    <div class="row mx-1 mx-md-2 mx-lg-4">
+      <div class="col-md-6">
+        <form action="/checkout" id="form" method="POST">
+          <h3>Informacion de la factura</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Nombre: </strong>{{session["user"]["name"]}} {{session["user"]["lastName"]}}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Correo: </strong>{{session["user"]["email"]}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Telefono: </strong>{{session["user"]["phone"]}}</p>
+              <p><strong>Direccion: </strong>{{session["user"]["streetType"]["name"]}} {{session["user"]["street"]}} {{session["user"]["addressNumber"]}} {{session["user"]["addressHouse"]}}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Informacion adicional: </strong>{{session["user"]["addressAditionalInfo"]}}</p>
+              <p><strong>Ciudad: </strong>{{session["user"]["city"]["name"]}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="form-floating mb-2 validate">
+                <input type="number" class="form-control validate-pattern-personalID" name="cedula" id="cedula" placeholder="Cedula:">
+                <label for="cedula">Cedula:</label>
+                <div class="error-message">
+                  Por favor escriba su Cedula.
+                </div>  
+                <div class="pattern-error-message">
+                  Su cedula solo puede contener entre 8 y 10 numeros.<br>
+                  No use puntos.<br>
+                  Ejemplo: 1234567890
+                </div>  
+              </div>
+            </div>
+          </div>
+          <div class="row my-3">
+            <h5>Como quieres pagar?</h5>
+            <div class="list-group validate">
+              <div class="list-group-item form-check">
+                <input class="form-check-input ms-1" type="radio" name="payment" id="efectivo" value="">
+                <label class="form-check-label" for="efectivo">&nbsp;Efectivo</label>
+              </div>  
+              <div class="list-group-item form-check">
+                <input class="form-check-input ms-1" type="radio" name="payment" id="paypal" value="">
+                <label class="form-check-label" for="paypal">&nbsp;Paypal</label>
+              </div>
+              <div class="error-message">
+                Por favor seleccione un Metodo de pago.
+              </div>  
+            </div>  
+            <button type="submit" class="btn btn-success my-3">Continuar con el pago</button>    
+          </div>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <div class="d-flex justify-content-between mb-3">  
+          <h3>Productos en el carrito</h3>
+          <h3><span class="badge rounded-pill bg-primary">5</span></h3>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <div class="d-flex flex-column flex-md-row">
+              <div class="col-12 col-md-2">
+                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="producto">
+              </div>
+              <div class="col-12 col-md-7">
+                <h5>Nombre del producto</h5>
+                <p>Descripcion del producto</p>
+              </div>
+              <div class="col-12 col-md-3">
+                <h4>$Precio</h4>
+                <p>xcantidad</p>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex flex-column flex-md-row">
+              <div class="col-12 col-md-2">
+                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="producto">
+              </div>
+              <div class="col-12 col-md-7">
+                <h5>Nombre del producto</h5>
+                <p>Descripcion del producto</p>
+              </div>
+              <div class="col-12 col-md-3">
+                <h4>$Precio</h4>
+                <p>xcantidad</p>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex flex-column flex-md-row">
+              <div class="col-12 col-md-2">
+                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="producto">
+              </div>
+              <div class="col-12 col-md-7">
+                <h5>Nombre del producto</h5>
+                <p>Descripcion del producto</p>
+              </div>
+              <div class="col-12 col-md-3">
+                <h4>$Precio</h4>
+                <p>xcantidad</p>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex flex-column flex-md-row">
+              <div class="col-12 col-md-2">
+                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="producto">
+              </div>
+              <div class="col-12 col-md-7">
+                <h5>Nombre del producto</h5>
+                <p>Descripcion del producto</p>
+              </div>
+              <div class="col-12 col-md-3">
+                <h4>$Precio</h4>
+                <p>xcantidad</p>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex flex-column flex-md-row">
+              <div class="col-12 col-md-2">
+                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="producto">
+              </div>
+              <div class="col-12 col-md-7">
+                <h5>Nombre del producto</h5>
+                <p>Descripcion del producto</p>
+              </div>
+              <div class="col-12 col-md-3">
+                <h4>$Precio</h4>
+                <p>xcantidad</p>
+              </div>
+            </div>
+          </li>
+           <li class="list-group-item bg-info">
+            <div class="d-flex flex-md-row justify-content-between mx-2">
+              <h4>Total</h4>
+              <h4 class="fw-bold">$Valor</h4>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+
+  </div>
+  <script>
+    for(item of document.getElementsByName("payment")){
+      item.addEventListener("click", event => {
+        for(option of document.getElementsByName("payment")){
+         if (option.checked) {
+          option.parentElement.classList.add("active");
+        }else{
+          option.parentElement.classList.remove("active");
+        }
+      }
+
+    });
+    }
+  </script>
+  <script type="text/javascript" src="{{url_for('static', filename='js/validation.js')}}"></script>
+  <script>
+    (function(){
+      const form = document.getElementById('form');
+      form.addEventListener('submit', event =>{
+        if(!validate()){
+          event.preventDefault();
+          event.stopPropagation();
+        }
+
+      });
+    })();
+  </script> 
+  {% include 'footer.html' %}
+

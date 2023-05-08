@@ -1,0 +1,26 @@
+.error {
+  border: solid 1px red;
+}
+.error-message{
+  font-size: small;
+  color: red;
+  margin-left: 15px;
+  margin-top: 3px;
+  display: none;
+}
+
+
+.pattern-error-message{
+    font-size: small;
+    color: red;
+    margin-left: 15px;
+    margin-top: 3px;
+    display: none;
+}
+.match-error-message{
+    font-size: small;
+    color: red;
+    margin-left: 15px;
+    margin-top: 3px;
+    display: none;
+}
