@@ -12,35 +12,38 @@
         </ul>
         <form action="/shop" method="GET" class="col-md-3">
           <div class="input-group">
-             <input class="form-control " type="search" name="keyword" placeholder="Buscar productos marcas y más">
-          <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
-          </div>
+           <input class="form-control " type="search" name="keyword" placeholder="Buscar productos marcas y más" required>
+           <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+         </div>
          
-        </form>
-        <ul class="nav">
-            <li class="nav-item ">
-              <a class="nav-link" href="/registerProduct">Vender</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">$ 0.00 <i class="bi bi-cart-fill"></i></a>
-            </li>
-                      {% if "user" in session %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            {{session["user"]["name"]}}</a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="/editProfile">Editar perfil</a>
-              <a class="dropdown-item" href="/myProducts">Mis productos</a>
-              <a class="dropdown-item" href="#">Compras</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="/logout">Salir</a>
-            </div>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="/login">Ingresa</a>
-            </li>
-            {% endif %}
-          </ul>
-        </div>
+       </form>
+       <ul class="nav">
+        <li class="nav-item ">
+          <a class="nav-link" href="/registerProduct">Vender</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="offcanvas"  data-bs-target="#offcanvasScrolling" role="button" aria-controls="offcanvasScrolling">
+            $ 0.00 <i class="bi bi-cart-fill"></i>
+          </a>
+        </li>
+        {% if "user" in session %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+          {{session["user"]["name"]}}</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/editProfile">Editar perfil</a>
+            <a class="dropdown-item" href="/myProducts">Mis productos</a>
+            <a class="dropdown-item" href="/myShopping">Compras</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">Salir</a>
+          </div>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Ingresa</a>
+          </li>
+          {% endif %}
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
+{% include 'cart.html' %}

@@ -30,7 +30,7 @@ function getCities(idDepartment){
 
 
 
-departmentSelect.onchange = function(){
+departmentSelect.onclick = function(){
       var options = document.querySelectorAll('#city option');
       options.forEach(o => o.remove());
       const option = document.createElement('option');
@@ -45,6 +45,7 @@ departmentSelect.onchange = function(){
                   option.text = city.name;
                   citySelect.appendChild(option);
             });
+            checkIsValid(citySelect);
       });
 
 };
@@ -97,11 +98,12 @@ function sendForm(){
 }
 
 function validateEmail(){
+      console.log("hola")
       if (txtEmail.value != txtEmailC.value) {
-            txtEmailC.classList.add("is-invalid", "border-danger");
+            txtEmailC.classList.add("error");
             return false;
       }else{
-            txtEmailC.classList.remove("is-invalid", "border-danger");
+            txtEmailC.classList.remove("error");
             return true;
       }
 }
@@ -127,18 +129,4 @@ function validarForm(){
 
 
 
-txtEmailC.onkeyup = function(){
-      validateEmail();
-};
-
-txtPasswordC.onkeyup = function(){
-      validatePassword();
-};
-
-
-const form = document.getElementById("form")
-form.onsubmit = function(){
-      validarForm();
-      return false;
-};
 
