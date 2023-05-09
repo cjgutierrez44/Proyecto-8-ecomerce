@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,7 +21,7 @@
 
       <div class="navbar-collapse collapse d-lg-flex justify-content-between" id="navbarColor01" style="">
         <div class="sidebar-sticky">
-          <h5 class="text-center text-success mt-3">Categorias</h5>
+          <h1 class="text-center text-success mt-3 fs-5">Categorias</h1>
           {{categoryId}}
           <ul class="nav flex-column">
             {% for category in categories %}
@@ -30,7 +30,7 @@
             </li>
             {% endfor %}
           </ul>
-          <h5 class="text-center text-success mt-3 mb-3">Precio</h5>
+          <h2 class="text-center text-success mt-3 mb-3 fs-5">Precio</h2>
           <ul class="nav flex-column">
             <li class="nav-item">
               <form action="/shop" method="GET">
@@ -63,7 +63,7 @@
             <div class="card h-100">
               <div class="card-header">
                 <a href="/shop/product/{{product['id']}}"> 
-                  <img src="http://127.0.0.1:8080/api/products/imagen/{{product['picture']}}" onerror='this.src="/static/uploads/{{product.picture}}"' class="card-img-top" style="height:317px;">
+                  <img src="http://127.0.0.1:8080/api/products/imagen/{{product['picture']}}" onerror='this.src="/static/uploads/{{product.picture}}"' alt="{{product['name']}}" class="card-img-top" style="height:317px;">
                 </a>
               </div>
               <div class="card-body d-flex flex-column mb-3">
