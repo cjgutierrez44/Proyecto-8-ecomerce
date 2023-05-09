@@ -97,7 +97,7 @@ def editProfile():
 		else:
 			return redirect(url_for("index"))
 	else:
-		pass
+		return redirect(url_for("editProfile"))
 
 @app.route("/registerProduct", methods = ["GET", "POST"])
 def registerProduct():
