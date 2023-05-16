@@ -16,9 +16,8 @@
 <body class="bg-light">
   {% include 'header.html' %}
   <div class="container p-3  bg-white">
-    <h1 class="text-center">Finaliza la compra</h1>
-    <h2 class="text-center fs-1 bg-warning">Modulo en construccion</h2>
-    
+    <h1 class="text-center mb-5">Finaliza la compra</h1>
+  
     <div class="row mx-1 mx-md-2 mx-lg-4">
       <div class="col-md-6">
         <form action="/checkout" id="form" method="POST">
@@ -59,15 +58,13 @@
           </div>
           <div class="row my-3">
             <h5>Como quieres pagar?</h5>
-            <div class="list-group validate">
-              <div class="list-group-item form-check">
-                <input class="form-check-input ms-1" type="radio" name="payment" id="efectivo" value="">
-                <label class="form-check-label" for="efectivo">&nbsp;Efectivo</label>
-              </div>  
-              <div class="list-group-item form-check">
-                <input class="form-check-input ms-1" type="radio" name="payment" id="paypal" value="">
-                <label class="form-check-label" for="paypal">&nbsp;Paypal</label>
-              </div>
+            <div class="list-group ">
+              {% for paymentMethod in paymentMethods %}
+                <div class="list-group-item form-check">
+                  <input class="form-check-input ms-1" type="radio" name="payment" id="payment-{{paymentMethod.id}}" value="{{paymentMethod.id}}">
+                  <label class="form-check-label" for="payment-{{paymentMethod.id}}">&nbsp;{{paymentMethod.name}}</label>
+                </div>
+              {% endfor %}  
               <div class="error-message">
                 Por favor seleccione un Metodo de pago.
               </div>  
@@ -79,88 +76,37 @@
       <div class="col-md-6">
         <div class="d-flex justify-content-between mb-3">  
           <h3>Productos en el carrito</h3>
-          <h3><span class="badge rounded-pill bg-primary">5</span></h3>
+          <h3><span class="badge rounded-pill bg-primary">{{shoppingCart.shoppingCartProducts|length}}</span></h3>
         </div>
-        <ul class="list-group">
+        <ul class="list-group"> 
+          {% for product in shoppingCart.shoppingCartProducts %}
+            <li class="list-group-item">
+              <div class="d-flex flex-column flex-md-row">
+                <div class="col-12 col-md-2">
+                  <img src="http://127.0.0.1:8080/api/products/imagen/{{product.product.picture}}" onerror='this.src="/static/uploads/{{product.product.picture}}"'  class="card-img-top" style="max-width: 100%;" alt="producto">
+                </div>
+                <div class="col-12 col-md-7 ps-md-2">
+                  <h5>{{product.product.name}}</h5>
+                  <p>{{product.product.description}}</p>
+                </div>
+                <div class="col-12 col-md-3">
+                  <h4>$ {{product.product.price}}</h4>
+                  <p>x {{product.amount}}</p>
+                  
+                </div>
+              </div>
+            </li>
+          {% endfor %}
           <li class="list-group-item">
-            <div class="d-flex flex-column flex-md-row">
-              <div class="col-12 col-md-2">
-                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="producto">
-              </div>
-              <div class="col-12 col-md-7">
-                <h5>Nombre del producto</h5>
-                <p>Descripcion del producto</p>
-              </div>
-              <div class="col-12 col-md-3">
-                <h4>$Precio</h4>
-                <p>xcantidad</p>
-              </div>
+            <div class="d-flex flex-md-row justify-content-between mx-2">
+              <h4>Subtotal</h4>
+              <h4 class="fw-bold">$ {{subtotal}}</h4>
             </div>
           </li>
-          <li class="list-group-item">
-            <div class="d-flex flex-column flex-md-row">
-              <div class="col-12 col-md-2">
-                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="producto">
-              </div>
-              <div class="col-12 col-md-7">
-                <h5>Nombre del producto</h5>
-                <p>Descripcion del producto</p>
-              </div>
-              <div class="col-12 col-md-3">
-                <h4>$Precio</h4>
-                <p>xcantidad</p>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex flex-column flex-md-row">
-              <div class="col-12 col-md-2">
-                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="producto">
-              </div>
-              <div class="col-12 col-md-7">
-                <h5>Nombre del producto</h5>
-                <p>Descripcion del producto</p>
-              </div>
-              <div class="col-12 col-md-3">
-                <h4>$Precio</h4>
-                <p>xcantidad</p>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex flex-column flex-md-row">
-              <div class="col-12 col-md-2">
-                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="producto">
-              </div>
-              <div class="col-12 col-md-7">
-                <h5>Nombre del producto</h5>
-                <p>Descripcion del producto</p>
-              </div>
-              <div class="col-12 col-md-3">
-                <h4>$Precio</h4>
-                <p>xcantidad</p>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex flex-column flex-md-row">
-              <div class="col-12 col-md-2">
-                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="producto">
-              </div>
-              <div class="col-12 col-md-7">
-                <h5>Nombre del producto</h5>
-                <p>Descripcion del producto</p>
-              </div>
-              <div class="col-12 col-md-3">
-                <h4>$Precio</h4>
-                <p>xcantidad</p>
-              </div>
-            </div>
-          </li>
-           <li class="list-group-item bg-info">
+          <li class="list-group-item bg-info">
             <div class="d-flex flex-md-row justify-content-between mx-2">
               <h4>Total</h4>
-              <h4 class="fw-bold">$Valor</h4>
+              <h4 class="fw-bold">$ {{total}}</h4>
             </div>
           </li>
         </ul>

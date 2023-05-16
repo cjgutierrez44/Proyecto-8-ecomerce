@@ -9,6 +9,19 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 UPLOAD_FOLDER = os.path.join('static', 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+api = "http://127.0.0.1:8080/api"
+
+@app.route('/userInSession', methods=['GET'])
+def userInSession():
+	if "user" in session:
+		user = str(session["user"]["id"])
+	else:
+		user = "null"
+	return user
+
+
+
 @app.route("/")
 def index():
 	return render_template("home.html")
@@ -26,7 +39,7 @@ def login():
 
 		headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 
-		url = "http://127.0.0.1:8080/api/users/login"
+		url = api + "/users/login"
 		resp = requests.post(url, data=data, headers = headers)
 		if resp.status_code == 200:
 			print("no hay error")
@@ -56,9 +69,9 @@ def register():
 	if "user" in session:
 		return redirect(url_for("index"))
 	if request.method == "GET":
-		url = "http://127.0.0.1:8080/api/departments"
+		url = api + "/departments"
 		departments = requests.get(url).json()
-		url = "http://127.0.0.1:8080/api/streetTypes"
+		url = api + "/streetTypes"
 		streetTypes = requests.get(url).json()
 		return render_template("register.html", departments = departments, streetTypes = streetTypes)	
 	else:
@@ -82,7 +95,7 @@ def register():
 			"addressAditionalInfo": request.form['infoAddress']
 		};
 		headers = {'Content-type': 'application/json'}
-		url = "http://127.0.0.1:8080/api/users/register"
+		url = api + "/users/register"
 		resp = requests.post(url, data=json.dumps(user), headers=headers)
 
 		return redirect(url_for("login"))
@@ -91,7 +104,7 @@ def register():
 def editProfile():
 	if request.method == "GET":
 		if "user" in session:
-			url = "http://127.0.0.1:8080/api/streetTypes"
+			url = api + "/streetTypes"
 			streetTypes = requests.get(url).json()
 			return render_template("editProfile.html", user = session["user"], streetTypes = streetTypes)
 		else:
@@ -105,7 +118,7 @@ def registerProduct():
 	
 		if request.method == "GET":
 			if "user" in session:
-				url = "http://127.0.0.1:8080/api/categories"
+				url = api + "/categories"
 				categories = requests.get(url).json()
 				return render_template("registerProduct.html", categories = categories)
 		else:
@@ -161,12 +174,12 @@ def registerProduct():
 
 @app.route("/shop")
 def shop():
-	url = "http://127.0.0.1:8080/api/categories"
+	url = api + "/categories"
 	categories = requests.get(url).json()
 	categoryId = str(request.args.get('categoryId'))
 	try:
 		entero = int(categoryId)
-		url = "http://127.0.0.1:8080/api/products/ByCategoryId/"+categoryId
+		url = api + "/products/ByCategoryId/"+categoryId
 	except ValueError:
 		print("todo")
 		keyword = request.args.get('keyword')
@@ -182,7 +195,7 @@ def shop():
 		if maxPrice is None or maxPrice == "":
 			maxPrice = 0
 
-		url = "http://127.0.0.1:8080/api/products?keyword=" + keyword + "&minPrice=" + str(minPrice) + "&maxPrice=" + str(maxPrice)
+		url = api + "/products?keyword=" + keyword + "&minPrice=" + str(minPrice) + "&maxPrice=" + str(maxPrice)
 	products = requests.get(url).json()
 	return render_template("shop.html", categories = categories, products = products)
 
@@ -190,9 +203,9 @@ def shop():
 
 @app.route("/shop/product/<id>")
 def product(id):
-	url = "http://127.0.0.1:8080/api/products/byId/" + id
+	url = api + "/products/byId/" + id
 	product = requests.get(url).json()
-	url = "http://127.0.0.1:8080/api/comments/byProductId/" + id
+	url = api + "/comments/byProductId/" + id
 	comments = requests.get(url).json()
 	return render_template("product.html", product = product, comments = comments)
 
@@ -211,7 +224,7 @@ def comment(id):
 	}
 
 	headers = {'Content-type': 'application/json'}
-	url = "http://127.0.0.1:8080/api/comments/save/" + id
+	url = api + "/comments/save/" + id
 	
 	resp = requests.post(url, data=json.dumps(comment), headers=headers)
 	return redirect(url_for("product", id = id))
@@ -219,7 +232,7 @@ def comment(id):
 @app.route("/myProducts")
 def myProducts():
 	if "user" in session:
-		url = "http://127.0.0.1:8080/api/products/ByUserId/" + str(session["user"]["id"])
+		url = api + "/products/ByUserId/" + str(session["user"]["id"])
 		products = requests.get(url).json()
 		return render_template("myProducts.html", products = products)
 	else:
@@ -228,10 +241,10 @@ def myProducts():
 @app.route("/deleteProduct/<id>")
 def deleteProduct(id):
 	if "user" in session:
-		url = "http://127.0.0.1:8080/api/products/byId/" + id
+		url = api + "/products/byId/" + id
 		product = requests.get(url).json()
 		if product["user"]["id"] == session["user"]["id"]:
-			url = "http://127.0.0.1:8080/api/products/remove/" + id
+			url = api + "/products/remove/" + id
 			resp = requests.get(url).json()
 			return  redirect(url_for("myProducts"))
 		else:
@@ -242,7 +255,7 @@ def deleteProduct(id):
 @app.route("/myProducts/deleted")
 def deletedProducts():
 	if "user" in session:
-		url = "http://127.0.0.1:8080/api/products/ByUserIdDeleted/" + str(session["user"]["id"])
+		url = api + "/products/ByUserIdDeleted/" + str(session["user"]["id"])
 		products = requests.get(url).json()
 		return render_template("myProducts.html", products = products)
 	else:
@@ -252,10 +265,10 @@ def deletedProducts():
 @app.route("/restoreProduct/<id>")
 def restoreProduct(id):
 	if "user" in session:
-		url = "http://127.0.0.1:8080/api/products/byId/" + id
+		url = api + "/products/byId/" + id
 		product = requests.get(url).json()
 		if product["user"]["id"] == session["user"]["id"]:
-			url = "http://127.0.0.1:8080/api/products/restore/" + id
+			url = api + "/products/restore/" + id
 			resp = requests.get(url).json()
 			return  redirect(url_for("deletedProducts"))
 		else:
@@ -268,16 +281,16 @@ def restoreProduct(id):
 def updateProduct(id):
 	if "user" in session:
 		if request.method == "GET":
-			url = "http://127.0.0.1:8080/api/products/byId/" + id
+			url = api + "/products/byId/" + id
 			product = requests.get(url).json()
 			if product["user"]["id"] == session["user"]["id"]:
-				url = "http://127.0.0.1:8080/api/categories"
+				url = api + "/categories"
 				categories = requests.get(url).json()
 				return render_template("editProduct.html", product = product, categories = categories)
 			else:
 				return redirect(url_for("myProducts"))
 		else:
-			url = "http://127.0.0.1:8080/api/products/byId/" + id
+			url = api + "/products/byId/" + id
 			productE = requests.get(url).json()
 
 			eanCode = request.form['eanCode']
@@ -332,22 +345,83 @@ def updateProduct(id):
 
 @app.route("/myShopping", methods = ["GET", "POST"])
 def myShopping():
-	return render_template("myShopping.html")
+	url = api + "/invoices/getInvoicesByUserId/" + str(session["user"]["id"])
+	shopping = requests.get(url).json()
+	return render_template("myShopping.html", shopping = shopping)
+
+
 
 @app.route("/checkout", methods = ["GET", "POST"])
 def checkout():
-	return render_template("checkout.html")
+	
+	if not "user" in session:
+		return redirect(url_for("shop")) 
 
-@app.route("/purchaseSummary")
-def purchaseSummary():
-		return render_template("purchaseSummary.html")
+	if request.method == "GET":
+		url = api + "/shoppingCarts/byUserId/" + str(session["user"]["id"])
+		shoppingCart = requests.get(url).json()
+		if len(shoppingCart["shoppingCartProducts"]) == 0:
+			return redirect(url_for("shop"))
+		subtotal = 0
+		for product in shoppingCart["shoppingCartProducts"]:
+			subtotal += product["product"]["price"] * product["amount"]
+		total = subtotal + (subtotal*0.19)
+		url = api + "/paymentMethods"
+		paymentMethods = requests.get(url).json()
+		return render_template("checkout.html", shoppingCart = shoppingCart, subtotal = subtotal, total = total, paymentMethods = paymentMethods)
+	else:
+		cc = request.form["cedula"]
+		payment = request.form["payment"]
+		invoice = {
+			"date": "",
+			"customerDocument": cc,
+			"subTotal": 0,
+			"total": 0,
+			"user":{
+				"id": session["user"]["id"]
+			},
+			"paymentMethod": {
+				"id": payment
+			},
+			"state": {
+				"id" : 1
+			}
+		}
+
+		url = api + "/invoices/save"
+		headers = {'Content-type': 'application/json'}
+		resp = requests.post(url, data=json.dumps(invoice), headers=headers).json()
+		return redirect(url_for("purchaseSummary", id = resp["id"]))
+		
+
+@app.route("/purchaseSummary/<id>")
+def purchaseSummary(id):
+	url = api + "/invoices/getInvoiceById/" + str(id)
+	invoice = requests.get(url).json()
+	if (invoice["user"]["id"] == session["user"]["id"]):
+		return render_template("purchaseSummary.html", invoice = invoice)
+	else:
+		return(redirect(url_for("index")))
+	
+
+@app.route("/payInvoice/<id>")
+def payInvoice(id):
+	url = api + "/invoices/payInvoice/" + str(id)
+	invoice = requests.get(url) 
+	return redirect(url_for("purchaseSummary", id = id))
+
+@app.route("/cancelInvoice/<id>")
+def cancelInvoice(id):
+	url = api + "/invoices/cancelInvoice/" + str(id)
+	invoice = requests.get(url)
+	return redirect(url_for("purchaseSummary", id = id))
 
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
 
-app.run()
+app.run(port=5001)
 
 
 
