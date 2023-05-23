@@ -15,40 +15,58 @@
 <body class="bg-light">
   {% include 'header.html' %}
   <div class="container p-3  bg-white">
-    <h1 class="text-center">Tus compras</h1>
-    <h2 class="text-center fs-1 bg-warning">Modulo en construccion</h2>
-    <div class="row">
-      <div class="card">
-        <h5 class="card-header">07/05/2023</h5>
-        <div class="card-body">
-          <div class="row">
-            <div class="d-flex flex-row">
-              <div class="col-2">
-                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="">
-              </div>
-              <div class="col-10 px-4">
-                <h4 class="text-success">Estado de la compra</h4>
-                <ul class="list-group">
-                  <li class="list-group-item">Producto #1</li>
-                  <li class="list-group-item">Producto #3</li>
-                  <li class="list-group-item">Producto #4</li>
-                  <li class="list-group-item">Producto #5</li>
-                </ul>
-              </div>
-            </div>
+    <h1 class="text-center mb-5">Tus compras</h1>
 
+      {% for shop in shopping %}
+          <div class="row mb-3">
+      {% set color = "text-success" %}
+      {% if shop.state.id == 5 %}
+        {% set color = "text-warning" %}
+      {% endif %}
+      {% if shop.state.id == 6 %}
+        {% set color = "text-success" %}
+      {% endif %}
+      {% if shop.state.id == 7 %}
+        {% set color = "text-danger" %}
+      {% endif %}
+        <div class="card">
+          <div class="card-header">
+            <h5>{{shop.date}}</h5>
           </div>
-          <div class="row mt-3 my-md-1">
-            <h4 class="text-end">$TotalDeLaCompra</h4>
-          </div>
-          <div class="row mt-3 my-md-1 ">
-            <div class="d-flex flex-column">
-              <a href="/purchaseSummary" class="btn btn-outline-info align-self-end">Ver compra</a>
+          <div class="card-body">
+            <div class="row">
+              <div class="d-flex flex-row">
+                <div class="col-12 px-md-4">
+                  <h4 class="{{color}}">{{shop.state.name}}</h4>
+                  <ul class="list-group">
+                    {% for item in shop.detail %}
+                      <li class="list-group-item">
+                        
+                        <div class="d-flex justify-content-between">
+                          <p>x {{item.amount}} - {{item.product.name}}</p>
+                          <p>$ {{item.product.price}} c/u = <span class="fs-3">$ {{item.product.price * item.amount}}</span></p>
+                        </div>
+
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+            <div class="row mt-3 my-md-1">
+              <h2 class="text-end">Total: $ {{shop.total}}</h2>
+            </div>
+            <div class="row mt-3 my-md-1 ">
+              <div class="d-flex flex-column">
+                <a href="/purchaseSummary/{{shop.id}}" class="btn btn-outline-info align-self-end">Ver compra</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+         </div>
+      {% endfor %}
+   
     
   </div>
   {% include 'footer.html' %}
