@@ -15,125 +15,89 @@
 <body class="bg-light">
   {% include 'header.html' %}
   <div class="container p-3  bg-white">
-    <h1 class="text-center">Resumen de compra</h1>
-    <h2 class="text-center fs-1 bg-warning">Modulo en construccion</h2>
+    <h1 class="text-center mb-5">Resumen de compra</h1>
     <div class="row mx-1 mx-md-2 mx-lg-4">
       <div class="col-md-6">
-          <h3>Informacion de la factura</h3>
-          <div class="row">
-            <h2 class="">Fctura No. <span class="text-danger">11111</span></h2>
+        <h3>Informacion de la factura</h3>
+        <div class="row">
+          <h2 class="">Fctura No. <span class="text-danger">{{invoice.id}}</span></h2>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Cedula: </strong>{{invoice.customerDocument}}</p>
+            <p><strong>Nombre: </strong>{{invoice.user.name}} {{invoice.user.lastName}}</p>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <p><strong>Cedula: </strong>1001043270</p>
-              <p><strong>Nombre: </strong>{{session["user"]["name"]}} {{session["user"]["lastName"]}}</p>
-            </div>
-            <div class="col-md-6">
-              <p><strong>Correo: </strong>{{session["user"]["email"]}}</p>
-            </div>
+          <div class="col-md-6">
+            <p><strong>Correo: </strong>{{invoice.user.email}}</p>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <p><strong>Telefono: </strong>{{session["user"]["phone"]}}</p>
-              <p><strong>Direccion: </strong>{{session["user"]["streetType"]["name"]}} {{session["user"]["street"]}} #{{session["user"]["addressNumber"]}} {{session["user"]["addressHouse"]}}</p>
-            </div>
-            <div class="col-md-6">
-              <p><strong>Informacion adicional: </strong>{{session["user"]["addressAditionalInfo"]}}</p>
-              <p><strong>Ciudad: </strong>{{session["user"]["city"]["name"]}}</p>
-            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Telefono: </strong>{{invoice.user.phone}}</p>
+            <p><strong>Direccion: </strong>{{invoice["user"]["streetType"]["name"]}} {{invoice["user"]["street"]}} #{{invoice["user"]["addressNumber"]}} {{invoice["user"]["addressHouse"]}}</p>
           </div>
+          <div class="col-md-6">
+            <p><strong>Informacion adicional: </strong>{{invoice["user"]["addressAditionalInfo"]}}</p>
+            <p><strong>Ciudad: </strong>{{invoice["user"]["city"]["name"]}}</p>
+          </div>
+        </div>
 
-          <div class="row my-3">
-            <h5>Forma de pago</h5>
-            <p>Efectivo</p>
-            <h3 class="text-success">Estado de la compra: <strong>Entregado</strong></h3>
-            <a href="#" class="btn btn-info my-3">Descargar factura</a>    
-          </div>
+        <div class="row my-3">
+          <h5>Forma de pago</h5>
+          <p>{{invoice.paymentMethod.name}}</p>
+            {% set color = "text-success" %}
+            {% if invoice.state.id == 5 %}
+              {% set color = "text-warning" %}
+            {% endif %}
+            {% if invoice.state.id == 6 %}
+              {% set color = "text-success" %}
+            {% endif %}
+            {% if invoice.state.id == 7 %}
+              {% set color = "text-danger" %}
+            {% endif %}
+          <h3>Estado de la compra: <strong class="{{color}}">{{invoice.state.name}}</strong></h3>
+          {% if invoice.state.id == 5 %}
+            <div class="d-flex justify-content-between">
+              <a href="/payInvoice/{{invoice.id}}" class="btn btn-success mb-1 w-100 mx-1">Pagar</a>
+              <a href="/cancelInvoice/{{invoice.id}}" class="btn btn-danger mb-1 w-100 mx-1 confirm cancel-purchase">Cancelar compra</a>
+            </div>
+          {% endif %}
+          <a href="#" class="btn btn-info mb-3">Descargar factura</a>    
+        </div>
       </div>
       <div class="col-md-6">
         <div class="d-flex justify-content-center mb-3">  
           <h3>Detalle</h3>
         </div>
         <ul class="list-group">
+
+          {% for item in invoice.detail %}
           <li class="list-group-item">
             <div class="d-flex flex-column flex-md-row">
               <div class="col-12 col-md-2">
-                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="">
+                <img class="w-100" src="http://127.0.0.1:8080/api/products/imagen/{{item.product.picture}}"  onerror='this.src="/static/uploads/{{item.product.picture}}"' alt="{{item.product.name}}">
               </div>
               <div class="col-12 col-md-7">
-                <h5>Nombre del producto</h5>
-                <p>Descripcion del producto</p>
+                <h5>{{item.product.name}}</h5>
+                <p>{{item.product.description}}</p>
               </div>
               <div class="col-12 col-md-3">
-                <h4>$Precio</h4>
-                <p>xcantidad</p>
+                <h4>$ {{item.price}}</h4>
+                <p>x {{item.amount}}</p>
               </div>
             </div>
           </li>
-          <li class="list-group-item">
-            <div class="d-flex flex-column flex-md-row">
-              <div class="col-12 col-md-2">
-                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="">
-              </div>
-              <div class="col-12 col-md-7">
-                <h5>Nombre del producto</h5>
-                <p>Descripcion del producto</p>
-              </div>
-              <div class="col-12 col-md-3">
-                <h4>$Precio</h4>
-                <p>xcantidad</p>
-              </div>
+          {% endfor %}
+          <li class="list-group-item ">
+            <div class="d-flex flex-md-row justify-content-between mx-2">
+              <h4>Subtotal</h4>
+              <h4 class="fw-bold">$ {{invoice.subTotal}}</h4>
             </div>
           </li>
-          <li class="list-group-item">
-            <div class="d-flex flex-column flex-md-row">
-              <div class="col-12 col-md-2">
-                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="">
-              </div>
-              <div class="col-12 col-md-7">
-                <h5>Nombre del producto</h5>
-                <p>Descripcion del producto</p>
-              </div>
-              <div class="col-12 col-md-3">
-                <h4>$Precio</h4>
-                <p>xcantidad</p>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex flex-column flex-md-row">
-              <div class="col-12 col-md-2">
-                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="">
-              </div>
-              <div class="col-12 col-md-7">
-                <h5>Nombre del producto</h5>
-                <p>Descripcion del producto</p>
-              </div>
-              <div class="col-12 col-md-3">
-                <h4>$Precio</h4>
-                <p>xcantidad</p>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex flex-column flex-md-row">
-              <div class="col-12 col-md-2">
-                <img src="{{url_for('static', filename='img/Image-folder-amico.svg')}}" alt="">
-              </div>
-              <div class="col-12 col-md-7">
-                <h5>Nombre del producto</h5>
-                <p>Descripcion del producto</p>
-              </div>
-              <div class="col-12 col-md-3">
-                <h4>$Precio</h4>
-                <p>xcantidad</p>
-              </div>
-            </div>
-          </li>
-           <li class="list-group-item bg-info">
+          <li class="list-group-item bg-info">
             <div class="d-flex flex-md-row justify-content-between mx-2">
               <h4>Total</h4>
-              <h4 class="fw-bold">$Valor</h4>
+              <h4 class="fw-bold">$ {{invoice.total}}</h4>
             </div>
           </li>
         </ul>
@@ -143,5 +107,6 @@
 
     
   </div>
+  <script type="text/javascript" src="{{url_for('static', filename='js/validation.js')}}"></script>
   {% include 'footer.html' %}
 
