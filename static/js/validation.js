@@ -10,7 +10,8 @@
 
     const confirmMessages = {
         "default": "Esta seguro de realizar esta acción?",
-        "delete-product": "Está seguro de eliminar este producto?"
+        "delete-product": "Está seguro de eliminar este producto?",
+        "cancel-purchase": "Está seguro de que quiere cancelar la compra?"
     }
 
 
