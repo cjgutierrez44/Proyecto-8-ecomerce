@@ -39,6 +39,8 @@ function dropCart(){
 async function loadCart(){
 	
 	const cartProducts = await getCart();
+
+
 	cartProducts.shoppingCartProducts.forEach(detailCart => {
 		let deiabledR = "disabled";
 		let deiabledA = "disabled";
