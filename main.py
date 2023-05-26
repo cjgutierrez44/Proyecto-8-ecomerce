@@ -10,7 +10,7 @@ UPLOAD_FOLDER = os.path.join('static', 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-api = "http://127.0.0.1:8080/api"
+api = "http://44.211.126.252/api"
 
 @app.route('/userInSession', methods=['GET'])
 def userInSession():
