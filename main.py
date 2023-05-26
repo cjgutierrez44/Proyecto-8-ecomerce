@@ -161,11 +161,11 @@ def registerProduct():
 			}
 
 			headers = {'Content-type': 'application/json'}
-			url = "http://localhost:8080/api/products/save"
+			url = api + "/products/save"
 			resp = requests.post(url, data=json.dumps(product), headers=headers)
 
 
-			url = "http://localhost:8080/api/products/upload/"+ img_filename
+			url = api + "/products/upload/"+ img_filename
 			response = requests.post(url, files={'file': imagen})
 
 			return redirect(url_for("shop"))
@@ -311,7 +311,7 @@ def updateProduct(id):
 				img_path = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
 				with open(img_path, 'rb') as f:
 					imagen = f.read()
-				url = "http://localhost:8080/api/products/upload/"+ img_filename
+				url = api + "/products/upload/"+ img_filename
 				response = requests.post(url, files={'file': imagen})
 				
 			product = {
@@ -334,7 +334,7 @@ def updateProduct(id):
 			}
 
 			headers = {'Content-type': 'application/json'}
-			url = "http://localhost:8080/api/products/update"
+			url = api + "/products/update"
 			resp = requests.post(url, data=json.dumps(product), headers=headers)
 
 			return redirect(url_for("myProducts"))

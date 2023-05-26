@@ -19,7 +19,7 @@ async function getCart() {
 	const userId = await getUser();
 	if(userId != null){
 		try {
-			const response = await fetch("http://127.0.0.1:8080/api/shoppingCarts/byUserId/" + userId)
+			const response = await fetch("http://44.211.126.252/api/shoppingCarts/byUserId/" + userId)
 			if (!response.ok) {
 				throw new Error(message);
 			}			
@@ -67,7 +67,7 @@ async function loadCart(){
 		<div class="card-body">
 		<div class="row">
 		<div class="col-3">
-		<img class="card-img-top" src="http://127.0.0.1:8080/api/products/imagen/${detailCart.product.picture}" onerror='this.src="/static/uploads/${detailCart.product.picture}"' style="width:100%;" alt="${detailCart.product.name}">
+		<img class="card-img-top" src="http://44.211.126.252/api/products/imagen/${detailCart.product.picture}" onerror='this.src="/static/uploads/${detailCart.product.picture}"' style="width:100%;" alt="${detailCart.product.name}">
 		</div>
 		<div class="col-9 h-100">
 		<div class="row">
@@ -172,7 +172,7 @@ function updateAmount(button, value){
 			clearTimeout(addAmountTimeout);
 		}
 		addAmountTimeout = setTimeout(()=>{
-			let url = "http://127.0.0.1:8080/api/shoppingCarts/updateAmount/" + detailCartId + "/" + amount.textContent;
+			let url = "http://44.211.126.252/api/shoppingCarts/updateAmount/" + detailCartId + "/" + amount.textContent;
 
 			sendFetch(url).then(data => {
 				amount.textContent = data;
@@ -200,7 +200,7 @@ function sendFetch(url){
 function removeProduct(event){
 	const card = goToCard(event.srcElement);
 	const detailCartId = parseInt(card.id.split("-")[1]);
-	fetch("http://127.0.0.1:8080/api/shoppingCarts/deleteProduct/" + detailCartId , {method: 'DELETE'}).then(response => {
+	fetch("http://44.211.126.252/api/shoppingCarts/deleteProduct/" + detailCartId , {method: 'DELETE'}).then(response => {
 		if (response.ok) {
 			card.remove();
 		}
@@ -228,7 +228,7 @@ async function addProduct(event) {
 		params.append('productId', productId);
 		params.append('amount', amount);
 
-		const response = await fetch("http://127.0.0.1:8080/api/shoppingCarts/addProduct", {
+		const response = await fetch("http://44.211.126.252/api/shoppingCarts/addProduct", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded"
