@@ -421,7 +421,7 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 
-app.run(port=5001)
+app.run()
 
 
 
