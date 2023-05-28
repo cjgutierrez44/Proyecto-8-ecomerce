@@ -3,7 +3,13 @@ import json
 import os
 from werkzeug.utils import secure_filename
 import requests
+import boto3
+from dotenv import load_dotenv
+load_dotenv()
+
 app	= Flask(__name__)
+
+
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 UPLOAD_FOLDER = os.path.join('static', 'uploads')
@@ -138,7 +144,7 @@ def registerProduct():
 			picture.save(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
 
 			img_path = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
-
+			upload_image_s3(img_filename)
 			with open(img_path, 'rb') as f:
 				imagen = f.read()
 
@@ -309,6 +315,7 @@ def updateProduct(id):
 			else:
 				picture.save(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
 				img_path = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
+				upload_image_s3(img_filename)
 				with open(img_path, 'rb') as f:
 					imagen = f.read()
 				url = api + "/products/upload/"+ img_filename
@@ -418,7 +425,7 @@ def cancelInvoice(id):
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 044
+    return render_template('404.html'), 404
 
 
 
@@ -428,7 +435,41 @@ def page_not_found(e):
 
 
 
+def upload_image_s3(image_name):
+	img_path = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], image_name))
+	with open(img_path, 'rb') as f:
+		image_data = f.read()
 
+	try:
+		s3_client = boto3.resource(
+			"s3",
+			aws_access_key_id = os.environ.get('ENV_AWS_ACCESS_KEY_ID'),
+			aws_secret_access_key = os.environ.get('ENV_AWS_SECRET_ACCESS_KEY'),
+			region_name = os.environ.get('ENV_AWS_REGION_NAME')
+		)
+		s3_client.Bucket(os.environ.get('ENV_AWS_S3_BUCKET_NAME')).put_object(Key = image_name, Body = image_data)
+	except Exception as e:
+		print(e)
+
+def get_s3_image_url(image_name):
+    try:
+        s3_client = boto3.client(
+            's3',
+            aws_access_key_id=os.environ.get('ENV_AWS_ACCESS_KEY_ID'),
+            aws_secret_access_key=os.environ.get('ENV_AWS_SECRET_ACCESS_KEY'),
+            region_name=os.environ.get('ENV_AWS_REGION_NAME')
+        )
+        response = s3_client.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': os.environ.get('ENV_AWS_S3_BUCKET_NAME'), 'Key': image_name},
+            ExpiresIn=15
+        )
+        return response
+    except Exception as e:
+        print(e)
+        return None
+app.jinja_env.globals['get_s3_image_url'] = get_s3_image_url
+app.run()
 
 
 
