@@ -36,7 +36,7 @@
         <div class="card h-100">
           <div class="card-header">
             <a href="/shop/product/{{product['id']}}"> 
-              <img src="http://127.0.0.1:8080/api/products/imagen/{{product['picture']}}" alt="{{product['name']}}" onerror='this.src="/static/uploads/{{product.picture}}"' class="card-img-top" style="height:317px;">
+              <img src="{{get_s3_image_url(product.picture)}}" alt="{{product['name']}}" onerror='this.src="/static/uploads/{{product.picture}}"' class="card-img-top" style="height:317px;">
             </a>
           </div>
           <div class="card-body d-flex flex-column mb-3">
