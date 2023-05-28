@@ -83,7 +83,7 @@
             <li class="list-group-item">
               <div class="d-flex flex-column flex-md-row">
                 <div class="col-12 col-md-2">
-                  <img src="http://127.0.0.1:8080/api/products/imagen/{{product.product.picture}}" onerror='this.src="/static/uploads/{{product.product.picture}}"'  class="card-img-top" style="max-width: 100%;" alt="producto">
+                  <img src="{{get_s3_image_url(product.picture)}}" onerror='this.src="/static/uploads/{{product.product.picture}}"'  class="card-img-top" style="max-width: 100%;" alt="producto">
                 </div>
                 <div class="col-12 col-md-7 ps-md-2">
                   <h5>{{product.product.name}}</h5>
