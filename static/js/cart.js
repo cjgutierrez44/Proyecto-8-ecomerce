@@ -1,4 +1,5 @@
 const cart = document.getElementById("cart");
+const valueCart = document.getElementById("valueCart");
 let time = 2000;
 let timer = time;
 
@@ -24,7 +25,7 @@ async function getCart() {
 				throw new Error(message);
 			}			
 			const data = await response.json();			
-			return data;
+			return data
 		} catch(e) {
 			console.log(e);
 			return null;
@@ -32,78 +33,97 @@ async function getCart() {
 	}
 }
 
+function getImageLink(imageName){
+	return fetch("/getImageLink/" + imageName)
+	.then(response => response.json())
+	.then(data => {
+		result = data;
+	})
+	.catch(error => console.error(error));
+}
+
+
+
 function dropCart(){
 	cart.innerHTML = "";
 }
 
-async function loadCart(){
-	
+async function updateTotalCart(){
+	let totalCart = 0;
 	const cartProducts = await getCart();
-
-
+	let totalProductos = cartProducts.shoppingCartProducts.length;
+	let productosCargados = 0;
 	cartProducts.shoppingCartProducts.forEach(detailCart => {
-		let deiabledR = "disabled";
-		let deiabledA = "disabled";
-		if (detailCart.amount > 1)
-			deiabledR = "";
-		
-		if (detailCart.amount < detailCart.product.quantity)
-			deiabledA = "";
-		
-		const productCard = document.createElement("div");
-		productCard.classList.add("card", "border-3", "mb-3");
-		productCard.id =  "detailCart-" + detailCart.id;
-		let productCardBody = `
-		<div class="card-header">
-		<div class="row">
-		<div class="col-11">
-		<p>${detailCart.product.name}</p>
-		</div>
-		<div class="col-1 d-flex justify-content-center">
-		<button class="btn-close btn-remove-product"></button>
-		</div>
-		</div>
-		</div>
-		<div class="card-body">
-		<div class="row">
-		<div class="col-3">
-		<img class="card-img-top" src="http://44.211.126.252/api/products/imagen/${detailCart.product.picture}" onerror='this.src="/static/uploads/${detailCart.product.picture}"' style="width:100%;" alt="${detailCart.product.name}">
-		</div>
-		<div class="col-9 h-100">
-		<div class="row">
-		<div class="col-7 m-auto">
-		<div class="input-group" role="group">
-		<button type="button" class="btn btn-outline-dark btn-remove" ${deiabledR}><i class="bi bi-dash-lg"></i></button>
-		<span class="py-2 border border-1 text-center" style="border-color:black !important; width: 35px;" id="amount-${detailCart.id}">${detailCart.amount}</span>
-		<button type="button" class="btn btn-outline-dark btn-add" ${deiabledA}><i class="bi bi-plus-lg"></i></button>
-		</div>
-		<small class="mt-2">Disponible: ${detailCart.product.quantity}</small>
-		</div>
-		<div class="col-5">
-		<p class="fs-5 my-auto text-end">$ ${detailCart.product.price}</p>
-		</div>
-		</div>
-		</div>
-		</div>
-		</div>
-		`;
-		productCard.innerHTML = productCardBody;
-		cart.appendChild(productCard);
+		totalCart += detailCart.amount * detailCart.product.price;
+		valueCart.textContent = totalCart;
 	});
+}
 
 
-	const addButtons = document.getElementsByClassName("btn-add");
-	for(button of addButtons){
-		button.addEventListener("click", addAmount);
-	}
-	const removeButtons = document.getElementsByClassName("btn-remove");
-	for(button of removeButtons){
-		button.addEventListener("click", removeAmount);
-	}
-	const removeProductButtons = document.getElementsByClassName("btn-remove-product");
-	for(button of removeProductButtons){
-		button.addEventListener("click", removeProduct);
-	}
+async function loadCart(){
+	const cartProducts = await getCart();
+	
+	cartProducts.shoppingCartProducts.forEach(detailCart => {
+		
+		let imageURL = "";
+		let idAddBtn = "add-" + detailCart.id;
+		let idRemoveBtn = "remove-" + detailCart.id;
+		let idRemoveProductBtn = "remove-product-" + detailCart.id;
+
+		getImageLink(detailCart.product.picture).then(() => {
+			imageURL = result.url;
+			let deiabledR = "disabled";
+			let deiabledA = "disabled";
+			if (detailCart.amount > 1)
+				deiabledR = "";
+			if (detailCart.amount < detailCart.product.quantity)
+				deiabledA = "";
+			const productCard = document.createElement("div");
+			productCard.classList.add("card", "border-3", "mb-3");
+			productCard.id =  "detailCart-" + detailCart.id;
+			let productCardBody = `
+			<div class="card-header">
+			<div class="row">
+			<div class="col-11">
+			<p>${detailCart.product.name}</p>
+			</div>
+			<div class="col-1 d-flex justify-content-center">
+			<button class="btn-close btn-remove-product" id="${idRemoveProductBtn}"></button>
+			</div>
+			</div>
+			</div>
+			<div class="card-body">
+			<div class="row">
+			<div class="col-3">
+			<img class="card-img-top" src="${imageURL}" onerror='this.src="/static/uploads/${detailCart.product.picture}"'  style="width:100%;" alt="${detailCart.product.name}">
+			</div>
+			<div class="col-9 h-100">
+			<div class="row">
+			<div class="col-7 m-auto">
+			<div class="input-group" role="group">
+			<button type="button" class="btn btn-outline-dark btn-remove" ${deiabledR} id="${idRemoveBtn}"><i class="bi bi-dash-lg"></i></button>
+			<span class="py-2 border border-1 text-center" style="border-color:black !important; width: 35px;" id="amount-${detailCart.id}">${detailCart.amount}</span>
+			<button type="button" class="btn btn-outline-dark btn-add" ${deiabledA} id="${idAddBtn}" ><i class="bi bi-plus-lg"></i></button>
+			</div>
+			<small class="mt-2">Disponible: ${detailCart.product.quantity}</small>
+			</div>
+			<div class="col-5">
+			<p class="fs-5 my-auto text-end">$ ${detailCart.product.price}</p>
+			</div>
+			</div>
+			</div>
+			</div>
+			</div>
+			`;
+			productCard.innerHTML = productCardBody;
+			cart.appendChild(productCard);
+
+			document.getElementById(idAddBtn).addEventListener("click", addAmount);
+			document.getElementById(idRemoveBtn).addEventListener("click", removeAmount);
+			document.getElementById(idRemoveProductBtn).addEventListener("click", removeProduct);
+		});
+
+	});
 
 }
 
@@ -122,11 +142,11 @@ async function loadCart(){
 let addAmountTimeout;
 
 
-function addAmount(event){
+async function addAmount(event){
 	updateAmount(event.srcElement, 1);
 }
 
-function removeAmount(event){
+async function removeAmount(event){
 	updateAmount(event.srcElement, -1);
 }
 
@@ -138,6 +158,7 @@ function getMaxFromCard(button){
 }
 
 function updateAmount(button, value){
+	
 	const card = goToCard(button);
 	const detailCartId = parseInt(card.id.split("-")[1]);
 	const amount = document.getElementById("amount-" + detailCartId);
@@ -147,14 +168,13 @@ function updateAmount(button, value){
 		btnGroup = btnGroup.parentElement;
 	}
 	for(element of btnGroup.children){
-	if (element.classList.contains("btn-remove")) {
-		if(parseInt(amount.textContent) + value == 1){
+		if (element.classList.contains("btn-remove")) {
+			if(parseInt(amount.textContent) + value == 1){
 				button.disabled = true;
-		}else{
-			element.disabled = false;
+			}else{
+				element.disabled = false;
+			}
 		}
-	}
-
 
 		if(element.classList.contains("btn-add")){
 			if(parseInt(amount.textContent) + value == getMaxFromCard(button)){
@@ -218,6 +238,7 @@ function goToCard(origin){
 
 
 async function addProduct(event) {
+
 	const userId = await getUser();
 	const card = goToCard(event.srcElement);
 	const productId = parseInt(card.id.split("-")[1]);
@@ -241,14 +262,13 @@ async function addProduct(event) {
 		}
 
 		const data = await response.json();
-		dropCart();
-		loadCart();
 		const toastLiveExample = document.getElementById('liveToast')
 
 		const toast = new bootstrap.Toast(toastLiveExample)
 
 		toast.show()
-
+		dropCart();
+		loadCart();
 		return data;
 	} catch (error) {
 		console.log(error);
