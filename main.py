@@ -428,13 +428,6 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 
-
-
-
-
-
-
-
 def upload_image_s3(image_name):
 	img_path = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], image_name))
 	with open(img_path, 'rb') as f:
@@ -450,6 +443,7 @@ def upload_image_s3(image_name):
 		s3_client.Bucket(os.environ.get('ENV_AWS_S3_BUCKET_NAME')).put_object(Key = image_name, Body = image_data)
 	except Exception as e:
 		print(e)
+
 
 def get_s3_image_url(image_name):
     try:
@@ -468,6 +462,13 @@ def get_s3_image_url(image_name):
     except Exception as e:
         print(e)
         return None
+
+
+@app.route("/getImageLink/<imageName>")
+def getImageLink(imageName):
+	url = {'url': get_s3_image_url(imageName)}
+	return url
+
 app.jinja_env.globals['get_s3_image_url'] = get_s3_image_url
 app.run()
 
