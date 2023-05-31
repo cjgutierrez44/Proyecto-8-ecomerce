@@ -133,6 +133,10 @@ async function loadCart(){
 	for(button of addProductButtons){
 		button.addEventListener("click", addProduct);
 	}
+	const addProductButtons2 = document.getElementsByClassName("btn-add-product2");
+	for(button of addProductButtons2){
+		button.addEventListener("click", addProduct2);
+	}
 
 
 	loadCart();
@@ -276,3 +280,42 @@ async function addProduct(event) {
 
 }
 
+
+
+async function addProduct2(event) {
+
+	const userId = await getUser();
+	const productId = event.srcElement.id;
+	const amount = 1;
+	try {
+		const params = new URLSearchParams();
+		params.append('userId', userId);
+		params.append('productId', productId);
+		params.append('amount', amount);
+
+		const response = await fetch("http://44.211.126.252/api/shoppingCarts/addProduct", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			body: params
+		});
+
+		if (!response.ok) {
+			throw new Error("Error en la solicitud");
+		}
+
+		const data = await response.json();
+		const toastLiveExample = document.getElementById('liveToast')
+
+		const toast = new bootstrap.Toast(toastLiveExample)
+
+		toast.show()
+		dropCart();
+		loadCart();
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+
+}
