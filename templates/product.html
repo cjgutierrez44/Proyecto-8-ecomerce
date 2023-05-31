@@ -33,7 +33,7 @@
 				<p>{{product["description"]}}</p>
 				<p>Marca: {{product["brand"]}}</p>
 				<p>Categoria: {{product["category"]["name"]}}</p>
-				<a href="#" class="btn btn-success align-self-start px-5 mb-5">Comprar</a>
+				<button class="btn btn-success align-self-start px-5 mb-5 btn-add-product2" id="{{product['id']}}">Comprar</button>
 				<p>Publicado por: {{product["user"]["name"]}} {{product["user"]["lastName"]}}</p>
 				<p>Cantidad: {{product["quantity"]}}</p>
 			</div>
@@ -44,7 +44,7 @@
 					<form action="/shop/product/{{product['id']}}/comment" method="POST" id="form">
 						<div class="input-group validate">
 							<textarea name="comment" id="comment" class="form-control " rows="3" placeholder="Deja tu comentario." style="resize: none;"></textarea>
-							<button class="btn btn-success px-lg-3"><i class="bi bi-send-fill"></i></button>
+							<button class="btn btn-success px-lg-3"> <i class="bi bi-send-fill"></i></button>
 						</div>
 					</form>
 
