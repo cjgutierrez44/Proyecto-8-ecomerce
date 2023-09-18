@@ -19,7 +19,7 @@ const txtInfoAddress = document.getElementById("infoAddress");
 
 
 function getCities(idDepartment){
-      return fetch('http://44.211.126.252/api/cities/byDepartmentId/' + idDepartment)
+      return fetch('http://127.0.0.1:8080/api/cities/byDepartmentId/' + idDepartment)
       .then(response => response.json())
       .then(data => {
             cities = data;
