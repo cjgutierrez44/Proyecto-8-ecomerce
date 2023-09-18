@@ -19,7 +19,7 @@ const txtInfoAddress = document.getElementById("infoAddress");
 
 
 function getCities(idDepartment){
-      return fetch('http://127.0.0.1:8080/api/cities/byDepartmentId/' + idDepartment)
+      return fetch('http://10.142.51.99:8080/api/cities/byDepartmentId/' + idDepartment)
       .then(response => response.json())
       .then(data => {
             cities = data;
@@ -77,7 +77,7 @@ function sendForm(){
 
 
       // Enviar los datos a la API utilizando fetch
-      fetch('http://127.0.0.1:8080/api/users/register', {
+      fetch('http://10.142.51.99:8080/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

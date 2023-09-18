@@ -472,7 +472,7 @@ def getImageLink(imageName):
 app.jinja_env.globals['get_s3_image_url'] = get_s3_image_url
 
 
-ip = input("enter ip address")
+ip = input("enter ip address: ")
 
 app.run(host=ip)
 
