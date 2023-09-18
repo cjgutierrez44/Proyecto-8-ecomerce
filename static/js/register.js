@@ -17,9 +17,18 @@ const txtNumber = document.getElementById("number");
 const txtHouse = document.getElementById("house");
 const txtInfoAddress = document.getElementById("infoAddress");
 
+const ipBack = localStorage.getItem("ipBack");
+
+
+if (ipBack) {
+
+}else{
+      localStorage.setItem("ipBack", prompt("Join local ip"));
+      window.location.reload();     
+}
 
 function getCities(idDepartment){
-      return fetch('http://10.142.51.99:8080/api/cities/byDepartmentId/' + idDepartment)
+      return fetch('http://' + ipBack + ':8080/api/cities/byDepartmentId/' + idDepartment)
       .then(response => response.json())
       .then(data => {
             cities = data;
@@ -77,7 +86,7 @@ function sendForm(){
 
 
       // Enviar los datos a la API utilizando fetch
-      fetch('http://10.142.51.99:8080/api/users/register', {
+      fetch('http://' + ipBack + ':8080/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

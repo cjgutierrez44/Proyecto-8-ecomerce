@@ -3,6 +3,17 @@ const valueCart = document.getElementById("valueCart");
 let time = 2000;
 let timer = time;
 
+const ipBack = localStorage.getItem("ipBack");
+
+
+if (ipBack) {
+
+}else{
+	localStorage.setItem("ipBack", prompt("Join local ip"));
+	window.location.reload();	
+}
+
+
 async function getUser(){
 	try{
 		const response = await fetch("/userInSession");
@@ -20,7 +31,7 @@ async function getCart() {
 	const userId = await getUser();
 	if(userId != null){
 		try {
-			const response = await fetch("http://10.142.51.99:8080/api/shoppingCarts/byUserId/" + userId)
+			const response = await fetch("http://" + ipBack + ":8080/api/shoppingCarts/byUserId/" + userId)
 			if (!response.ok) {
 				throw new Error(message);
 			}			
@@ -196,7 +207,7 @@ function updateAmount(button, value){
 			clearTimeout(addAmountTimeout);
 		}
 		addAmountTimeout = setTimeout(()=>{
-			let url = "http://10.142.51.99:8080/api/shoppingCarts/updateAmount/" + detailCartId + "/" + amount.textContent;
+			let url = "http://" + ipBack + ":8080/api/shoppingCarts/updateAmount/" + detailCartId + "/" + amount.textContent;
 
 			sendFetch(url).then(data => {
 				amount.textContent = data;
@@ -224,7 +235,7 @@ function sendFetch(url){
 function removeProduct(event){
 	const card = goToCard(event.srcElement);
 	const detailCartId = parseInt(card.id.split("-")[1]);
-	fetch("http://10.142.51.99:8080/api/shoppingCarts/deleteProduct/" + detailCartId , {method: 'DELETE'}).then(response => {
+	fetch("http://" + ipBack + ":8080/api/shoppingCarts/deleteProduct/" + detailCartId , {method: 'DELETE'}).then(response => {
 		if (response.ok) {
 			card.remove();
 		}
@@ -253,7 +264,7 @@ async function addProduct(event) {
 		params.append('productId', productId);
 		params.append('amount', amount);
 
-		const response = await fetch("http://10.142.51.99:8080/api/shoppingCarts/addProduct", {
+		const response = await fetch("http://" + ipBack + ":8080/api/shoppingCarts/addProduct", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded"
@@ -293,7 +304,7 @@ async function addProduct2(event) {
 		params.append('productId', productId);
 		params.append('amount', amount);
 
-		const response = await fetch("http://10.142.51.99:8080/api/shoppingCarts/addProduct", {
+		const response = await fetch("http://" + ipBack + ":8080/api/shoppingCarts/addProduct", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded"
